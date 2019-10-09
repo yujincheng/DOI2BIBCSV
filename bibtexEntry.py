@@ -18,7 +18,7 @@ class BibEntry:
         self.author = author
         self.title = title
         self.title = self.title.replace(',','')
-        self.title = self.title.replace(':','')
+        self.title = self.title.replace(':',':')
         self.title = self.title.replace('-','')
         self.journal = journal
         self.journal = self.journal.replace(',','')

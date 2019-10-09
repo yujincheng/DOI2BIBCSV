@@ -33,7 +33,7 @@ def GetBibs(input_file, output_file):
 output = open('input.txt', 'w')
 for line in stdin:
     if search('=', line.strip()):
-        key, value = [v.strip(" {},\n") for v in line.split("=", 1)]
+        key, value = [v.strip(" {},\n\r") for v in line.split("=", 1)]
         if key == 'doi' or key == 'DOI':
             output.write(value)
             output.write('\n')

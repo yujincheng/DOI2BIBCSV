@@ -16,7 +16,7 @@ def doiToJson(doi):
     url = 'http://data.crossref.org/' + doi
     headers = {'Accept': 'application/citeproc+json'}
     r = requests.get(url, headers=headers)
-    meta = json.loads(r.content)
+    meta = json.loads(r.content.decode("utf-8") )
     return meta
 
 def doiToBib(doi):
@@ -31,6 +31,12 @@ def doiToBib(doi):
     author = getAuthor(data)
     year, month =  getYearMonth( data)
     title = getField("title", data)
+    subtitle = getField("subtitle",data)
+    if not (subtitle == []):
+        subtitle = ''.join(subtitle)
+        title += " : "
+        title += subtitle
+        print (title)
     volume = getField("volume", data)
     entry = be.BibEntry(author = author, year = year, journal = journal, title = title, volume = volume)
     entry.number = getField("is-referenced-by-count", data)
@@ -63,7 +69,10 @@ def getAuthor(data):
             authors = value
             # Parse each author in turn
             for aval in authors:
-                firstname = aval['given']
+                if 'given' in aval:
+                    firstname = aval['given']
+                else:
+                    firstname = ' '
                 lastname = aval['family']
                 output += "%s, %s and " % (lastname, firstname)  
             output = output.strip(" and ")
